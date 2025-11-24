@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableMaciOSPlatform>false</EnableMaciOSPlatform>
+        <EnableMacCatalystPlatform>false</EnableMacCatalystPlatform>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4"/>
+        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\" />
+      <Folder Include="Models\" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,243 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{float}
+
+% Nastavení stránky
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{RoommateApp}
+\fancyfoot[C]{\thepage}
+
+% Nastavení pro kód
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
+
+% Hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\title{\textbf{RoommateApp} \\ 
+       \large Aplikace pro správu výdajů spolubydlících}
+\author{Tadeáš Pohlídal}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Přehled aplikace}
+
+\textbf{RoommateApp} je mobilní aplikace vytvořená v .NET MAUI pro správu společných výdajů mezi spolubydlícími. Umožňuje uživatelům vytvářet skupiny, přidávat výdaje, automaticky počítat dluhy a spravovat jejich splacení s notifikačním systémem.
+
+\subsection{Klíčové funkcionality}
+\begin{itemize}
+    \item Správa uživatelských účtů s bezpečnou autentizací
+    \item Vytváření a správa skupin spolubydlících
+    \item Přidávání výdajů
+    \item Automatický výpočet dluhů mezi členy
+    \item Systém notifikací o splacených dluzích
+    \item Přehledné zobrazení výdajů a dluhů
+\end{itemize}
+
+\section{Architektura aplikace}
+
+\subsection{Technologie}
+\begin{itemize}
+    \item \textbf{.NET 8}
+    \item \textbf{.NET MAUI}
+    \item \textbf{Entity Framework Core}
+    \item \textbf{SQLite}
+\end{itemize}
+
+\subsection{Vrstvová architektura}
+
+Aplikace je navržena ve čtyřvrstvové architektuře:
+
+\begin{enumerate}
+    \item \textbf{Presentation Layer (Prezentační vrstva)}
+    \begin{itemize}
+        \item Views -- XAML stránky aplikace
+        \item ViewModels -- business logika pro UI
+    \end{itemize}
+    
+    \item \textbf{Application Layer (Aplikační vrstva)}
+    \begin{itemize}
+        \item Services -- aplikační služby (AuthService, NotificationService)
+        \item Factories -- továrny pro vytváření objektů (Factory pattern)
+        \item Auth -- logika pro autentizaci a autorizaci
+    \end{itemize}
+    
+    \item \textbf{Domain Layer (Doménová vrstva)}
+    \begin{itemize}
+        \item Models -- doménové entity (Uzivatel, Skupina, Vydaj, Dluh)
+        \item Strategies -- Strategy pattern
+        \item Observers -- Observer pattern
+    \end{itemize}
+    
+    \item \textbf{Infrastructure Layer (Infrastrukturní vrstva)}
+    \begin{itemize}
+        \item Data -- AppDbContext a databázové konfigurace
+        \item DbContext -- Entity Framework context
+    \end{itemize}
+\end{enumerate}
+
+\section{UML diagramy}
+
+\subsection{Use Case diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Use_case.png}
+    \label{fig:use-case}
+\end{figure}
+
+\subsection{Class diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Class.png}
+    \label{fig:class}
+\end{figure}
+
+\subsection{Sequence diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Sequential.png}
+    \label{fig:sequential}
+\end{figure}
+
+\subsection{State Machine diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{State_machine.png}
+    \label{fig:state_machine}
+\end{figure}
+
+\subsection{Activity diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Activity.png}
+    \label{fig:activity}
+\end{figure}
+
+\section{Návrhové vzory}
+
+\subsection{Strategy Pattern}
+\textbf{Účel}: Flexibilní výpočet dluhů podle různých strategií
+\begin{itemize}
+    \item \texttt{IVypocetDluhuStrategy} -- rozhraní strategie
+    \item \texttt{RovnomerneRozdeleniStrategy} -- rovnoměrné dělení částky
+    \item \texttt{VahoveRozdeleniStrategy} -- dělení podle vah členů
+\end{itemize}
+
+\textbf{Použití}: \texttt{SpravceUctu} může za běhu měnit strategii výpočtu
+
+\subsection{Observer Pattern}
+\textbf{Účel}: Notifikace o změnách stavu dluhů
+\begin{itemize}
+    \item \texttt{ISubject} / \texttt{IObserver} -- základní rozhraní
+    \item \texttt{Dluh} implementuje \texttt{ISubject}
+    \item Konkrétní observeři: \texttt{EmailNotifier}, \texttt{SmsNotifier}, \texttt{InAppNotifier}, \texttt{ConsoleNotifier}
+\end{itemize}
+
+\textbf{Použití}: Při označení dluhu jako splacený se automaticky rozešlou notifikace
+
+\subsection{Factory Pattern}
+\textbf{Účel}: Vytváření instancí notifikačních služeb
+\begin{itemize}
+    \item \texttt{INotifierFactory} -- rozhraní factory
+    \item \texttt{NotifierFactory} -- konkrétní implementace
+    \item Dynamické vytváření notifierů podle typu
+\end{itemize}
+
+\textbf{Použití}: \texttt{NotificationService} používá factory pro vytváření aktivních notifierů
+
+\subsection{MVVM Pattern}
+\textbf{Účel}: Oddělení prezentační a business logiky (Jenom částečně implementované)
+\begin{itemize}
+    \item \texttt{BaseViewModel} -- základní třída pro view modely
+    \item \texttt{RelayCommand} / \texttt{AsyncRelayCommand} -- implementace ICommand
+    \item Data binding mezi Views a ViewModels
+\end{itemize}
+
+\section{Databázový model}
+
+\subsection{Hlavní entity}
+\begin{itemize}
+    \item \textbf{Uzivatel} -- uživatelské účty s hashem hesel
+    \item \textbf{Skupina} -- skupiny spolubydlících
+    \item \textbf{Clenstvi} -- M:N vazba mezi uživateli a skupinami
+    \item \textbf{Vydaj} -- společné výdaje ve skupinách
+    \item \textbf{Dluh} -- automaticky generované dluhy z výdajů
+\end{itemize}
+
+\subsection{Klíčové vztahy}
+\begin{itemize}
+    \item Uživatel <-> Skupina (M:N přes Clenstvi)
+    \item Skupina -> Vydaj (1:N)
+    \item Vydaj -> Dluh (1:N)
+    \item Uživatel -> Dluh (1:N jako dlužník i věřitel)
+\end{itemize}
+
+\section{Bezpečnost}
+
+\subsection{Přihlašování}
+\begin{itemize}
+    \item Hesla jsou šifrovaná pomocí BCryptu
+    \item Aplikace si pamatuje přihlášeného uživatele
+    \item Při prvním spuštění se automaticky vytvoří testovací účty (V Homepage je zakomentované tlačítko pro reset databáze pro testovací purposes)
+\end{itemize}
+
+\subsection{Oprávnění uživatelů}
+\begin{itemize}
+    \item Každá skupina má svého administrátora
+    \item Pouze administrátor může mazat skupinu nebo upravovat členy
+    \item Dluh může označit jako splacený pouze věřitel
+    \item Všechna zadávaná data se kontrolují před uložením
+\end{itemize}
+
+\section{Testování a kvalita}
+
+\subsection{Implementované kontroly}
+\begin{itemize}
+    \item \textbf{Validace dat} na všech vrstvách
+    \item \textbf{Exception handling} s uživatelsky přívětivými hláškami
+    \item \textbf{Asynchronní operace} pro databázové volání
+    \item \textbf{Memory management} s properly disposed objekty
+\end{itemize}
+
+\subsection{Potenciální rozšíření}
+\begin{itemize}
+    \item Dodělat přidávání přátel
+    \item Unit testy pro business logiku
+    \item Refactoring
+    \item Integration testy pro databázové operace
+    \item UI testy pro kritické user journeys
+\end{itemize}
+
+\section{Závěr}
+
+Aplikace RoommateApp je funkční mobilní aplikace pro správu výdajů spolubydlících (a teoreticky jakýchkoliv výdajů). Úspěšně implementuje všechny požadované návrhové vzory a splňuje zadání projektu. Pro další rozšíření by bylo vhodné dokončit MVVM implementaci a přidat testování.
+
+\end{document}

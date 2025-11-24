@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoommateApp.Maui.Views.GroupsPage"
+             Title="Skupina">
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <!-- Výběr skupiny -->
+        <Grid ColumnDefinitions="*,Auto" Margin="15,10">
+            <Picker ItemsSource="{Binding Skupiny}" 
+                    SelectedItem="{Binding VybranaSkupina}"
+                    Title="Vyberte skupinu" 
+                    ItemDisplayBinding="{Binding Nazev}" />
+            
+            <Button Grid.Column="1" 
+                    Text="+" 
+                    WidthRequest="40"
+                    Margin="5,0,0,0"
+                    FontSize="18"
+                    VerticalOptions="Center"
+                    Command="{Binding AddGroupCommand}"/>
+        </Grid>
+        
+        <!-- Souhrn skupiny -->
+        <Frame Grid.Row="1" Margin="15,0,15,10" Padding="15" BackgroundColor="#f0f0f0" CornerRadius="10">
+            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
+                <!-- Název skupiny a menu -->
+                <StackLayout Grid.ColumnSpan="2" Orientation="Horizontal">
+                    <Label Text="{Binding NazevSkupiny}" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           VerticalOptions="Center"
+                           HorizontalOptions="StartAndExpand" />
+                    
+                    <!-- Dropdown menu -->
+                    <Grid HorizontalOptions="End" VerticalOptions="Center">
+                        <Label Text="⋮" 
+                               FontSize="24" 
+                               FontAttributes="Bold"
+                               TextColor="Gray"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Padding="10,5">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SkupinaMenuCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </StackLayout>
+                
+                <!-- Počet členů -->
+                <Label Text="Počet členů:" 
+                       Grid.Row="1" 
+                       Margin="0,10,0,0" 
+                       FontAttributes="Bold" />
+                <Label Text="{Binding PocetClenu}" 
+                       Grid.Row="1" 
+                       Grid.Column="1" 
+                       Margin="0,10,0,0" 
+                       HorizontalOptions="End" />
+                
+                <!-- Celkové výdaje -->
+                <Label Text="Celkové výdaje:" 
+                       Grid.Row="2" 
+                       Margin="0,5,0,0" 
+                       FontAttributes="Bold" />
+                <Label Text="{Binding CelkoveVydaje}" 
+                       Grid.Row="2" 
+                       Grid.Column="1" 
+                       Margin="0,5,0,0" 
+                       HorizontalOptions="End" />
+                
+                <!-- Stav vyrovnání -->
+                <Label Text="Stav vyrovnání:" 
+                       Grid.Row="3" 
+                       Margin="0,5,0,0" 
+                       FontAttributes="Bold" />
+                <Label Text="{Binding StavVyrovnani}" 
+                       Grid.Row="3" 
+                       Grid.Column="1" 
+                       Margin="0,5,0,0" 
+                       HorizontalOptions="End" />
+            </Grid>
+        </Frame>
+        
+        <!-- Loading indikátor -->
+        <ActivityIndicator Grid.Row="2" 
+                          IsVisible="{Binding IsBusy}" 
+                          IsRunning="{Binding IsBusy}"
+                          VerticalOptions="Center" />
+        
+        <!-- Chybová zpráva -->
+        <Label Grid.Row="2" 
+               Text="{Binding ErrorMessage}" 
+               TextColor="Red" 
+               IsVisible="{Binding HasError}"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        
+        <!-- Výdaje a dluhy -->
+        <ScrollView Grid.Row="2" Margin="15,0">
+            <StackLayout Spacing="5">
+                <!-- Seznam výdajů -->
+                <StackLayout>
+                    <Label Text="Výdaje skupiny" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           Margin="0,0,0,2" />
+                    
+                    <ListView ItemsSource="{Binding Vydaje}" 
+                              HasUnevenRows="True"
+                              HeightRequest="180">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Padding="0,5" ColumnDefinitions="*,Auto">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VydajSelectedCommand}"
+                                                                CommandParameter="{Binding}" />
+                                        </Grid.GestureRecognizers>
+                                        
+                                        <Label Text="{Binding Popis}" 
+                                               VerticalOptions="Center" 
+                                               FontAttributes="Bold" />
+                                        <StackLayout Grid.Column="1" 
+                                                     HorizontalOptions="End">
+                                            <Label Text="{Binding Castka, StringFormat='{0} Kč'}" 
+                                                   HorizontalOptions="End" 
+                                                   FontAttributes="Bold" />
+                                            <Label Text="{Binding Datum, StringFormat='{0:dd.MM.yyyy}'}" 
+                                                   HorizontalOptions="End" 
+                                                   FontSize="12" 
+                                                   TextColor="Gray" />
+                                        </StackLayout>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+                
+                <!-- Detaily vybraného výdaje -->
+                <Frame IsVisible="{Binding IsDetailVydajeVisible}"
+                       BackgroundColor="#f0f0f0" 
+                       Padding="10" 
+                       Margin="0,5,0,5" 
+                       CornerRadius="5">
+                    <StackLayout>
+                        <Label Text="Detaily výdaje" 
+                               FontSize="16" 
+                               FontAttributes="Bold" />
+                        
+                        <Grid RowSpacing="5" ColumnSpacing="10" Margin="0,5,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Text="Název:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" VerticalOptions="Start"/>
+                            <Label Text="{Binding NazevVydaje}" Grid.Row="0" Grid.Column="1" VerticalOptions="Start" LineBreakMode="WordWrap"/>
+                            
+                            <Label Text="Částka:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" VerticalOptions="Start"/>
+                            <Label Text="{Binding CastkaVydaje}" Grid.Row="1" Grid.Column="1" VerticalOptions="Start"/>
+                            
+                            <Label Text="Datum:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalOptions="Start"/>
+                            <Label Text="{Binding DatumVydaje}" Grid.Row="2" Grid.Column="1" VerticalOptions="Start"/>
+                            
+                            <Label Text="Platil:" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalOptions="Start"/>
+                            <Label Text="{Binding PlatilVydaj}" Grid.Row="3" Grid.Column="1" VerticalOptions="Start" LineBreakMode="WordWrap"/>
+                            
+                            <Label Text="Účastníků:" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalOptions="Start"/>
+                            <Label Text="{Binding PocetUcastniku}" Grid.Row="4" Grid.Column="1" VerticalOptions="Start"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+                
+                <!-- Seznam dluhů -->
+                <StackLayout Margin="0,0,0,5">
+                    <Label Text="Seznam dluhů" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           Margin="0,0,0,2" />
+                    
+                    <!-- Žádné dluhy -->
+                    <Label Text="Žádné nezaplacené dluhy" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           Margin="0,10,0,0" 
+                           IsVisible="{Binding ZadneDluhy}" />
+                    
+                    <CollectionView ItemsSource="{Binding Dluhy}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,5">
+                                    <Frame Padding="10,8"
+                                           CornerRadius="5"
+                                           BackgroundColor="{Binding BackgroundColor}">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OznacitDluhSplacenyCommand}"
+                                                                CommandParameter="{Binding}" />
+                                        </Frame.GestureRecognizers>
+                                        
+                                        <Grid ColumnDefinitions="*,Auto,*,Auto">
+                                            <!-- Dlužník -->
+                                            <Label Text="{Binding Dluh.Dluznik.Jmeno}" 
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Start"
+                                                   FontSize="14"
+                                                   LineBreakMode="TailTruncation" />
+                                            
+                                            <!-- Šipka -->
+                                            <Label Text="→" 
+                                                   Grid.Column="1"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Center"
+                                                   FontSize="18" />
+                                            
+                                            <!-- Věřitel -->
+                                            <Label Text="{Binding Dluh.Veritel.Jmeno}" 
+                                                   Grid.Column="2"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Start"
+                                                   FontSize="14"
+                                                   LineBreakMode="TailTruncation" />
+                                            
+                                            <!-- Částka -->
+                                            <Label Text="{Binding Dluh.Castka, StringFormat='{0} Kč'}" 
+                                                   Grid.Column="3"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="End"
+                                                   FontAttributes="Bold"
+                                                   FontSize="14" />
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+        
+        <!-- Tlačítko pro přidání výdaje -->
+        <Button Grid.Row="2" 
+                Text="+" 
+                FontSize="24" 
+                WidthRequest="60" 
+                HeightRequest="60" 
+                CornerRadius="30" 
+                BackgroundColor="DodgerBlue" 
+                TextColor="White" 
+                HorizontalOptions="End" 
+                VerticalOptions="End" 
+                Margin="0,0,25,25"
+                Command="{Binding AddExpenseCommand}"/>
+    </Grid>
+</ContentPage>

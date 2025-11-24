@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoommateApp.Maui.Views.EditProfilePage"
+             Title="Úprava profilu">
+    <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+        
+        <Label Text="Upravit údaje" 
+               FontSize="24"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20" />
+        
+        <!-- Jméno -->
+        <Label Text="Jméno" />
+        <Entry x:Name="JmenoEntry" 
+               Placeholder="Zadejte své jméno" />
+        
+        <!-- Email (pouze zobrazení) -->
+        <Label Text="Email (nelze změnit)" />
+        <Entry x:Name="EmailEntry" 
+               IsEnabled="False"
+               TextColor="Gray" />
+        
+        <!-- Nové heslo -->
+        <Label Text="Nové heslo (nechte prázdné pro zachování)" />
+        <Entry x:Name="PasswordEntry" 
+               Placeholder="Zadejte nové heslo" 
+               IsPassword="True" />
+        
+        <!-- Potvrzení hesla -->
+        <Label Text="Potvrdit nové heslo" />
+        <Entry x:Name="ConfirmPasswordEntry" 
+               Placeholder="Zadejte nové heslo znovu" 
+               IsPassword="True" />
+        
+        <!-- Chybová zpráva -->
+        <Label x:Name="ErrorMessageLabel" 
+               TextColor="Red" 
+               IsVisible="False" />
+        
+        <!-- Tlačítka -->
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button Grid.Column="0"
+                    Text="Zrušit" 
+                    Clicked="OnCancelClicked"
+                    BackgroundColor="Gray"
+                    TextColor="White" />
+                    
+            <Button Grid.Column="1"
+                    Text="Uložit změny" 
+                    Clicked="OnSaveClicked"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White" />
+        </Grid>
+        
+    </VerticalStackLayout>
+</ContentPage>

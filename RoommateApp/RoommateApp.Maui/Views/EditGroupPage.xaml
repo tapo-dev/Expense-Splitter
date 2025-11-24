@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoommateApp.Maui.Views.EditGroupPage"
+             Title="Upravit skupinu">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Název skupiny -->
+            <Label Text="Název skupiny" FontAttributes="Bold" FontSize="16"/>
+            <Entry x:Name="NazevEntry" 
+                   FontSize="16"
+                   HeightRequest="45"/>
+            
+            <!-- Aktuální členové -->
+            <Label Text="Členové skupiny" FontAttributes="Bold" FontSize="16" Margin="0,10,0,0"/>
+            
+            <Frame BackgroundColor="#f0f0f0" Padding="10" CornerRadius="10">
+                <StackLayout x:Name="ClenoveSeznamContainer" Spacing="5">
+                    <!-- Dynamicky přidávání -->
+                </StackLayout>
+            </Frame>
+            
+            <!-- Přidat nové členy -->
+            <Label Text="Přidat nové členy" FontAttributes="Bold" FontSize="16" Margin="0,10,0,0"/>
+            
+            <!-- Vyhledávání uživatelů -->
+            <Entry x:Name="VyhledavaniEntry" 
+                   Placeholder="Vyhledat uživatele podle jména nebo emailu"
+                   TextChanged="OnVyhledavaniTextChanged"
+                   FontSize="14"
+                   HeightRequest="40"/>
+            
+            <!-- Seznam dostupných uživatelů -->
+            <Frame BackgroundColor="#f0f0f0" Padding="10" CornerRadius="10" HeightRequest="200">
+                <ScrollView>
+                    <StackLayout x:Name="DostupniUzivateleContainer" Spacing="5">
+                        <!-- Dynamický přidávání -->
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+            
+            <!-- Error message -->
+            <Label x:Name="ErrorLabel" 
+                   TextColor="Red" 
+                   IsVisible="False"
+                   FontSize="14"/>
+            
+            <!-- Upozornění -->
+            <Label x:Name="UpozorneniLabel" 
+                   TextColor="Orange" 
+                   IsVisible="False"
+                   FontSize="12"
+                   LineBreakMode="WordWrap"/>
+            
+            <!-- Tlačítka -->
+            <Grid RowDefinitions="Auto,Auto" RowSpacing="10" Margin="0,20,0,0">
+                <!-- Zrušit a Uložit -->
+                <Grid Grid.Row="0" ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0" 
+                            Text="Zrušit" 
+                            BackgroundColor="Gray" 
+                            TextColor="White"
+                            Clicked="OnCancelClicked"
+                            CornerRadius="10"
+                            HeightRequest="45"/>
+                    <Button Grid.Column="1" 
+                            Text="Uložit změny" 
+                            BackgroundColor="DodgerBlue" 
+                            TextColor="White"
+                            Clicked="OnSaveClicked"
+                            CornerRadius="10"
+                            HeightRequest="45"/>
+                </Grid>
+                
+                <!-- Smazat skupinu -->
+                <Button Grid.Row="1" 
+                        x:Name="SmazatSkupinuButton"
+                        Text="Smazat skupinu" 
+                        BackgroundColor="Red" 
+                        TextColor="White"
+                        Clicked="OnDeleteGroupClicked"
+                        CornerRadius="10"
+                        HeightRequest="45"
+                        HorizontalOptions="Fill"/>
+            </Grid>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

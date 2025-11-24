@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoommateApp.Maui.Views.RegisterPage"
+             Title="Registrace">
+    <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+        
+        <Label Text="Registrace" 
+               FontSize="24"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20" />
+        
+        <!-- Jméno -->
+        <Label Text="Jméno" />
+        <Entry Text="{Binding Jmeno}" 
+               Placeholder="Zadejte své jméno" />
+        
+        <!-- Email -->
+        <Label Text="Email" />
+        <Entry Text="{Binding Email}" 
+               Placeholder="Zadejte email" 
+               Keyboard="Email" />
+        
+        <!-- Heslo -->
+        <Label Text="Heslo" />
+        <Entry Text="{Binding Password}" 
+               Placeholder="Zadejte heslo" 
+               IsPassword="True" />
+        
+        <!-- Potvrzení hesla -->
+        <Label Text="Potvrdit heslo" />
+        <Entry Text="{Binding ConfirmPassword}" 
+               Placeholder="Zadejte heslo znovu" 
+               IsPassword="True" />
+        
+        <!-- Error message -->
+        <Label Text="{Binding ErrorMessage}" 
+               TextColor="Red" 
+               IsVisible="{Binding HasError}" />
+        
+        <!-- Loading indikátor -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}" 
+                          IsRunning="{Binding IsBusy}" />
+        
+        <!-- Tlačítka -->
+        <Button Text="Zaregistrovat se" 
+                Command="{Binding RegisterCommand}"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                Margin="0,20,0,5" />
+        
+        <Button Text="Už jste zaregistrovaný?" 
+                Command="{Binding BackToLoginCommand}"
+                BackgroundColor="Transparent"
+                TextColor="{StaticResource Primary}" />
+        
+    </VerticalStackLayout>
+</ContentPage>

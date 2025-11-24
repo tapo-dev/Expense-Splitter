@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoommateApp.Maui.Views.ProfilePage"
+             Title="Profil">
+    <ScrollView>
+        <StackLayout Margin="20">
+            <Grid Margin="0,0,0,20">
+                <!-- Odhlášení -->
+                <Button Text="Odhlásit se" 
+                        HorizontalOptions="Start"
+                        WidthRequest="120"
+                        BackgroundColor="#f0f0f0"
+                        TextColor="Black"
+                        CornerRadius="5"
+                        Clicked="OnOdhlasitClicked"/>
+                
+                <!-- Úprava profilu -->
+                <Image Source="cog.png" 
+                       HorizontalOptions="End"
+                       VerticalOptions="Center"
+                       HeightRequest="60"
+                       WidthRequest="60">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnNastaveniClicked"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+            
+            <!-- Profilová ikonka -->
+            <StackLayout HorizontalOptions="Center" Margin="0,10,0,30">
+                <Frame CornerRadius="10" 
+                       HeightRequest="150" 
+                       WidthRequest="150"
+                       HorizontalOptions="Center"
+                       BackgroundColor="#FFFFFF"
+                       Padding="0"
+                       IsClippedToBounds="True">
+                    <Image Source="profilepicture.png" 
+                           Aspect="AspectFill"
+                           VerticalOptions="Fill"
+                           HorizontalOptions="Fill"/>
+                </Frame>
+                <Label Text="Profil" 
+                       HorizontalOptions="Center"
+                       FontSize="20"
+                       Margin="0,5"/>
+            </StackLayout>
+            
+            <!-- Informace o profilu -->
+            <Frame BackgroundColor="#f0f0f0" Padding="15" CornerRadius="10" Margin="0,0,0,20">
+                <StackLayout Spacing="15">
+                    <Label Text="Informace" 
+                           FontSize="18" 
+                           FontAttributes="Bold"/>
+                    
+                    <Grid RowSpacing="10" ColumnSpacing="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Text="Jméno:" 
+                               FontAttributes="Bold" 
+                               Grid.Row="0" 
+                               Grid.Column="0"/>
+                        <Label x:Name="JmenoLabel" 
+                               Text="Petr" 
+                               Grid.Row="0" 
+                               Grid.Column="1"/>
+                        
+                        <Label Text="Datum registrace:" 
+                               FontAttributes="Bold" 
+                               Grid.Row="1" 
+                               Grid.Column="0"/>
+                        <Label x:Name="DatumRegistraceLabel" 
+                               Text="01.05.2023" 
+                               Grid.Row="1" 
+                               Grid.Column="1"/>
+                        
+                        <Label Text="Email:" 
+                               FontAttributes="Bold" 
+                               Grid.Row="2" 
+                               Grid.Column="0"/>
+                        <Label x:Name="EmailLabel" 
+                               Text="petr@example.com" 
+                               Grid.Row="2" 
+                               Grid.Column="1"/>
+                        
+                        <Label Text="Heslo:" 
+                               FontAttributes="Bold" 
+                               Grid.Row="3" 
+                               Grid.Column="0"/>
+                        <Label Text="********" 
+                               Grid.Row="3" 
+                               Grid.Column="1"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Přehled dluhů -->
+            <Label Text="Přehled dluhů" 
+                   FontSize="18" 
+                   FontAttributes="Bold" 
+                   Margin="0,0,0,10"/>
+            
+            <!-- Dluhy ve skupinách -->
+            <StackLayout x:Name="SkupinyDluhyContainer" Spacing="15">
+                <Frame BackgroundColor="#f0f0f0" Padding="15" CornerRadius="10">
+                    <StackLayout>
+                        <Label Text="Ve skupině: Skupina 1" 
+                               FontAttributes="Bold" 
+                               Margin="0,0,0,5"/>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="5">
+                            <Label Text="• Dlužíš:" 
+                                   Grid.Row="0" 
+                                   Grid.Column="0"/>
+                            <Label x:Name="Dluzis1Label" 
+                                   Text="75 Kč" 
+                                   Grid.Row="0" 
+                                   Grid.Column="1"
+                                   HorizontalOptions="End"/>
+                            
+                            <Label Text="• Tobě dluží:" 
+                                   Grid.Row="1" 
+                                   Grid.Column="0"/>
+                            <Label x:Name="DluziTobe1Label" 
+                                   Text="0 Kč" 
+                                   Grid.Row="1" 
+                                   Grid.Column="1"
+                                   HorizontalOptions="End"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+                
+                <Frame BackgroundColor="#f0f0f0" Padding="15" CornerRadius="10">
+                    <StackLayout>
+                        <Label Text="Ve skupině: Skupina 2" 
+                               FontAttributes="Bold" 
+                               Margin="0,0,0,5"/>
+                        
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="5">
+                            <Label Text="• Dlužíš:" 
+                                   Grid.Row="0" 
+                                   Grid.Column="0"/>
+                            <Label x:Name="Dluzis2Label" 
+                                   Text="0 Kč" 
+                                   Grid.Row="0" 
+                                   Grid.Column="1"
+                                   HorizontalOptions="End"/>
+                            
+                            <Label Text="• Tobě dluží:" 
+                                   Grid.Row="1" 
+                                   Grid.Column="0"/>
+                            <Label x:Name="DluziTobe2Label" 
+                                   Text="420 Kč" 
+                                   Grid.Row="1" 
+                                   Grid.Column="1"
+                                   HorizontalOptions="End"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

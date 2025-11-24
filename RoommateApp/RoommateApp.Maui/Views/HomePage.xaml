@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoommateApp.Maui.Views.HomePage"
+             Title="Přehled">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+        <!-- Shrnutí podle skupin -->
+        <Frame Grid.Row="0" Margin="15" CornerRadius="20" Padding="15">
+            <VerticalStackLayout>
+                <Label Text="Shrnutí napříč skupinami" FontSize="18" FontAttributes="Bold" Margin="0,0,0,15"/>
+                
+                <StackLayout x:Name="SkupinyContainer" Orientation="Vertical" Spacing="5">
+                    <!-- Dynamický přidávání -->
+                </StackLayout>
+                
+                <BoxView HeightRequest="1" Color="LightGray" Margin="0,10,0,10"/>
+                <Grid ColumnDefinitions="*,*">
+                    <Label x:Name="CelkovyDluhLabel" Grid.Column="0" Text="Pohromadě dlužíš 0 Kč ve všech skupinách" FontSize="12" TextColor="Gray"/>
+                    <Label x:Name="CelkovaPohledavkaLabel" Grid.Column="1" Text="Také dluží ostatní: 0 Kč" FontSize="12" TextColor="Gray" HorizontalOptions="End"/>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Quick access -->
+        <Frame Grid.Row="1" Margin="15,0,15,15" CornerRadius="10" Padding="15">
+            <VerticalStackLayout>
+                <Label Text="Rychlý přístup ke skupinám" FontSize="16" FontAttributes="Bold" Margin="0,0,0,10"/>
+                <CollectionView x:Name="SkupinyRychlePristupCollectionView" 
+                               SelectionMode="Single"
+                               HeightRequest="150"
+                               SelectionChanged="OnSkupinaSelected">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 5,5,5,5" Margin="0,5">
+                                <Label Text="{Binding Nazev}" Padding="10" FontSize="16" VerticalOptions="Center" HorizontalOptions="Center"/>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Tlačítko pro reset databáze POUZE PRO TESTOVANÍ JINAK NECHAT ZAKOMENTOVANÝ -->
+        <Button Grid.Row="2" 
+                Text="Reset databáze" 
+                Margin="0,15,0,0"
+                BackgroundColor="Gray"
+                WidthRequest="200" 
+                HeightRequest="60" 
+                TextColor="White"
+                CornerRadius="10"
+                Clicked="OnResetDatabaseClicked"/>
+
+        <!-- Tlačítko pro přidání výdaje -->
+        <Button Grid.Row="2" 
+                Text="+" 
+                FontSize="24" 
+                WidthRequest="60" 
+                HeightRequest="60" 
+                CornerRadius="30" 
+                BackgroundColor="DodgerBlue" 
+                TextColor="White" 
+                HorizontalOptions="End" 
+                VerticalOptions="End" 
+                Margin="0,0,25,25"
+                Clicked="OnAddExpenseClicked"/>
+    </Grid>
+</ContentPage>

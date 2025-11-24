@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="RoommateApp.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:RoommateApp.Maui.Views"
+    Shell.FlyoutBehavior="Disabled">
+
+    <!-- Přihlášení a registrace -->
+    <ShellContent
+        Title="Přihlášení"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="login" />
+        
+    <ShellContent
+        Title="Registrace"
+        ContentTemplate="{DataTemplate views:RegisterPage}"
+        Route="register" />
+
+    <!-- Hlavní navigace -->
+    <TabBar Route="main">
+        <Tab Title="Domů" Icon="home.png">
+            <ShellContent
+                Title="Domů"
+                ContentTemplate="{DataTemplate views:HomePage}" />
+        </Tab>
+        
+        <Tab Title="Skupiny" Icon="groups.png">
+            <ShellContent
+                Title="Skupiny"
+                ContentTemplate="{DataTemplate views:GroupsPage}" />
+        </Tab>
+        
+        <Tab Title="Profil" Icon="profile.png">
+            <ShellContent
+                Title="Profil"
+                ContentTemplate="{DataTemplate views:ProfilePage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RoommateApp.Maui.Views.LoginPage"
+             Title="Přihlášení">
+    <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+        
+        <Label Text="Přihlašovací údaje" 
+               FontSize="24"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20" />
+        
+        <!-- Email -->
+        <Label Text="Email" />
+        <Entry Text="{Binding Email}" 
+               Placeholder="Zadejte email" 
+               Keyboard="Email" />
+        
+        <!-- Heslo -->
+        <Label Text="Heslo" />
+        <Entry Text="{Binding Password}" 
+               Placeholder="Zadejte heslo" 
+               IsPassword="True" />
+        
+        <!-- Zapamatovat si mě -->
+        <HorizontalStackLayout Spacing="10">
+            <CheckBox IsChecked="{Binding RememberMe}" />
+            <Label Text="Zapamatovat si mě" 
+                   VerticalOptions="Center" />
+        </HorizontalStackLayout>
+        
+        <!-- Chybová zpráva -->
+        <Label Text="{Binding ErrorMessage}" 
+               TextColor="Red" 
+               IsVisible="{Binding HasError}" />
+        
+        <!-- Loading indikátor -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}" 
+                          IsRunning="{Binding IsBusy}" />
+        
+        <!-- Tlačítka -->
+        <Button Text="Přihlásit se" 
+                Command="{Binding LoginCommand}"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                Margin="0,20,0,5" />
+        
+        <Button Text="Zapomenuté heslo" 
+                Command="{Binding ForgotPasswordCommand}"
+                BackgroundColor="Transparent"
+                TextColor="{StaticResource Primary}" />
+        
+        <Button Text="Registrace" 
+                Command="{Binding RegisterCommand}"
+                BackgroundColor="Transparent"
+                TextColor="{StaticResource Primary}" />
+        
+    </VerticalStackLayout>
+</ContentPage>
